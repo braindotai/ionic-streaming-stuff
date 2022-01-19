@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { StreamingMedia, StreamingVideoOptions } from '@awesome-cordova-plugins/streaming-media/ngx';
 
 @Component({
   selector: 'app-explore-container',
@@ -8,8 +9,18 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ExploreContainerComponent implements OnInit {
   @Input() name: string;
 
-  constructor() { }
+  options: StreamingVideoOptions = {
+    successCallback: () => { console.log('Video played') },
+    errorCallback: (e) => { console.log('Error streaming') },
+    orientation: 'landscape',
+    shouldAutoClose: true,
+    controls: false
+  };
 
-  ngOnInit() {}
+  constructor(private streamingMedia: StreamingMedia) { }
 
+  ngOnInit() {
+    console.log('streaming...');
+    this.streamingMedia.playVideo('rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mp4', this.options);
+  }
 }
